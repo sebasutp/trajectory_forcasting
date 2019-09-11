@@ -1,0 +1,7 @@
+.eggs
+traj_pred.egg-info
+*.swp
+*.pyc
+data/
+models/
+results/
