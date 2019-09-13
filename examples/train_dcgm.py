@@ -57,16 +57,14 @@ def create_cond_gen(length, D, z_size):
 def train_ball_dcgm(X, Times, Xval, Time_v, length, deltaT, z_size=64, batch_size=64, epochs=100):
     x_scaler = utils.train_std_scaler(X)
     x_transform = lambda x: x_scaler.transform( utils.transform_ball_traj(x,(-45,45),((-0.6,-0.8,0.0),(0.6,0.8,0.0))) )
-    epoch_size = 4000
     N = len(X)
     D = len(X[0][0])
-    ds_mult = int( math.ceil(epoch_size / N) )
 
-    my_mb = utils.TrajMiniBatch(Times, X, batch_size=batch_size, ds_mult=ds_mult,
+    my_mb = utils.TrajMiniBatch(Times, X, batch_size=batch_size, ds_mult=8,
             shuffle=True, x_transform=x_transform)
     dcgm_mb = dcgm.BatchDCGM(my_mb, length, deltaT, fake_missing_p=args.fake_missing_p)
 
-    my_mb_val = utils.TrajMiniBatch(Time_v, Xval, batch_size=batch_size, ds_mult=2,
+    my_mb_val = utils.TrajMiniBatch(Time_v, Xval, batch_size=batch_size, ds_mult=16,
             shuffle=True, x_transform=x_transform)
     dcgm_mb_val = dcgm.BatchDCGM(my_mb_val, length, deltaT, fake_missing_p=args.fake_missing_p)
 
@@ -104,8 +102,8 @@ def main(args):
     X = X[perm]
     Times = Times[perm]
 
-    ntrain = int(round(N*args.p))
-    nval = N-ntrain
+    nval = int(round(N*args.p))
+    ntrain = N-nval
     Xt = X[0:ntrain]
     Time_t = Times[0:ntrain]
     Xval = X[ntrain:]
