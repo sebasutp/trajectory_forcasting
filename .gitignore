@@ -5,3 +5,5 @@ traj_pred.egg-info
 data/
 models/
 results/
+build/
+dist/

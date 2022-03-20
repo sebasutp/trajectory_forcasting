@@ -1,6 +1,6 @@
 
 import numpy as np
-import keras
+from tensorflow import keras
 import tensorflow as tf
 import traj_pred.utils as utils
 import json
@@ -10,6 +10,11 @@ import matplotlib.pyplot as plt
 import time
 import bisect
 import logging
+
+# Note that this code was designed for tf1.0 and old keras. You need to disable eager execution
+# for proper behaviour.
+from tensorflow.python.framework.ops import disable_eager_execution
+disable_eager_execution()
 
 class Trajectory:
     """ Trajectory modeling with Deep Conditional Generative Model
@@ -110,7 +115,7 @@ def load_traj_model(path):
             partial_encoder=partial_encoder)
 
 
-class BatchDCGM(keras.utils.Sequence):
+class BatchDCGM(tf.keras.utils.Sequence):
     """ Creates mini-batches for a deep conditional generative model for trajectories
 
     Given a sequence of pairs (time, X) and a particular deltaT and length, returns a sequence
@@ -174,7 +179,7 @@ def dcgm_loss(mu_z_c, log_sig_z_c, mu_z_p, log_sig_z_p, log_sig_y):
         kl = 0.5 * keras.backend.sum(kl_terms)
         rec_loss = 0.5 * keras.backend.sum( d_sq_masked )
         tot_loss = rec_loss + kl
-        return tot_loss / tf.to_float(batch_size)
+        return tot_loss / tf.cast(batch_size, tf.float32)
     return loss
 
 class TrajDCGM:

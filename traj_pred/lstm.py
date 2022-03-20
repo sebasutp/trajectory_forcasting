@@ -9,7 +9,7 @@ import os
 import matplotlib.pyplot as plt
 import time
 
-class BatchLSTM(keras.utils.Sequence):
+class BatchLSTM(tf.keras.utils.Sequence):
     """ Creates mini-batches for an LSTM for trajectories
 
     Given a sequence of pairs (time, X) and a particular deltaT and length, returns a sequence

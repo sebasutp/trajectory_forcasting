@@ -6,6 +6,14 @@ prediction based on Conditional Variational Auto-Encoders (CVAE).
 The paper explaining all the details about this method can be found
 [here](https://arxiv.org/abs/1909.03895).
 
+Note
+----
+
+The code on this repo was designed to work with TF 1.0 and Keras.
+Some additions were done to be able to run it with TF 2.0 and tf.Keras
+instead, by running the code deactivating eager mode. Keep in mind that
+the support for this old API might be removed at any time by the TF team.
+
 
 Getting Started
 ---------------

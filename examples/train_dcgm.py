@@ -11,7 +11,8 @@ import numpy as np
 import sklearn.preprocessing as prep
 import traj_pred.utils as utils
 import traj_pred.dcgm as dcgm
-import keras
+from tensorflow import keras
+
 
 def dense_network(input_shape, output_shape, 
         hidden_layers=[(512, 'relu')], 
